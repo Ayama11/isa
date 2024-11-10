@@ -1,5 +1,7 @@
 import json
 
+from piece import Piece
+
 
 class Board:
     def __init__(self, size):
@@ -7,6 +9,38 @@ class Board:
         self.grid = [[None for _ in range(size)] for _ in range(size)]
         self.white_rings = []
         self.filled_rings = set()
+   
+
+
+
+    def get_state(self):
+        state = {}
+        for x in range(self.size):
+            for y in range(self.size):
+                piece = self.grid[x][y]
+                if isinstance(piece, Piece):
+                    state[(x, y)] = (piece.piece_type, piece.position)
+                else:
+                    state[(x, y)] = None
+        return state
+
+
+
+    
+
+
+    # def get_state(self):
+    #     # الحصول على تمثيل دقيق لحالة اللعبة في شكل مصفوفة 2D أو قاموس
+    #     state = {}
+    #     for x in range(self.board.size):
+    #         for y in range(self.board.size):
+    #             piece = self.board.grid[x][y]
+    #             if piece:
+    #                 state[(x, y)] = piece.piece_type
+    #     return state
+
+
+
 
     def reset_board(self, size):
         self.size = size
@@ -41,6 +75,8 @@ class Board:
             self.save_board_state()
             return True
         return False
+   
+   
     def apply_magnet_effects(self):
         for x in range(self.size):
            for y in range(self.size):
